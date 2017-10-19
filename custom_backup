@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# This will sync destination folders to source folders using rsync, with the expectation that the destination folders are only for backup and not used actively. This is why the "--delete" option of rsync is appropriate, it will make rsync delete all files in destination folders which no longer exist in the source folders, but the converse is not true. Output of rsync is redirected to a file called "update_backup_report.txt" in the home folder. 
+
+# make a new clean report file in Home
+report=~/backup_report.txt
+echo "" > $report
+
+# the root folder for the backup
+DEST_root=/media/simpsonim/SAMSUNG/.BACKUP/
+
+# list of files & folders to backup
+stuff_to_backup="
+/media/data_ntfs/FER/
+/media/data_ntfs/FIZIKA/
+/media/data_ntfs/knjige/
+/media/data_ntfs/mjuza/
+/media/data_ntfs/ostalo/
+/media/data_ntfs/slike/
+/media/data_ntfs/video/
+/home/simpsonim/
+/opt/eclipse/
+/usr/local/bin/eclipse
+/usr/share/pixmaps/eclipse.xpm
+/usr/share/applications/eclipse.desktop
+"
+
+DEST_root=`echo $DEST_root | sed 's|\(.*\)/$|\1|'` # remove trailing "/" if exists
+for i in $stuff_to_backup; do
+	SRC_folder=`echo $i | sed 's|\(.*\)/$|\1|'` # remove trailing "/" if exists
+	DEST_folder=`echo $DEST_root$SRC_folder | sed 's|\(.*/\).*|\1|'` # remove src folder/file name
+	#echo $SRC_folder $DEST_folder
+	sudo mkdir -p $DEST_folder
+	printf "\nSynchronizing $SRC_folder ...\n"
+	sudo rsync -ahv --delete $SRC_folder $DEST_folder >> $report 2>&1
+	cat $report | tail -q --lines=2
+done
+
+printf "\nDone!\n\n"
+
+# open the report file in gedit for viewing...
+gedit $report

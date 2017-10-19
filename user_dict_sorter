@@ -1,0 +1,39 @@
+#!/usr/bin/python
+
+import sys
+import os
+import string
+
+def usage():
+	print "This is a python script for sorting user.dict files."
+	print "One (1) argument is needed and that is just the folder where the user.dict files are located."
+	print "The script will locate all of them in that folder and sort them."
+	print
+
+usage()
+
+if len(sys.argv)<2:
+	print "You have to supply the folder location of the user.dict files!"
+	sys.exit(-1)
+
+dict_dir = sys.argv[1]
+
+if not os.path.isdir(dict_dir):
+	print "The path you supplied is not a folder!"
+	sys.exit(-1)
+
+for filename in os.listdir(dict_dir):
+	
+	if filename.endswith("user.dict"):
+		with open(dict_dir+filename,'r+') as current_file:
+
+			print "Sorting "+filename+" ..."
+
+			words = current_file.readlines()
+			words.sort(cmp=None, key=string.lower, reverse=False)
+			current_file.seek(0)
+			current_file.writelines(words)
+			current_file.flush()
+			current_file.truncate()
+
+print "Completed!"
