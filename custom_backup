@@ -11,18 +11,16 @@ DEST_root=/media/simpsonim/SAMSUNG/.BACKUP/
 
 # list of files & folders to backup
 stuff_to_backup="
-/media/data_ntfs/FER/
-/media/data_ntfs/FIZIKA/
-/media/data_ntfs/knjige/
-/media/data_ntfs/mjuza/
-/media/data_ntfs/ostalo/
-/media/data_ntfs/slike/
-/media/data_ntfs/video/
+/media/simpsonim/System/Users/simpsonim/
+/media/data_ntfs/
 /home/simpsonim/
-/opt/eclipse/
+/opt/
 /usr/local/bin/eclipse
+/usr/local/bin/ovito
+/usr/local/bin/lammps
 /usr/share/pixmaps/eclipse.xpm
 /usr/share/applications/eclipse.desktop
+/usr/share/applications/ovito.desktop
 "
 
 DEST_root=`echo $DEST_root | sed 's|\(.*\)/$|\1|'` # remove trailing "/" if exists
